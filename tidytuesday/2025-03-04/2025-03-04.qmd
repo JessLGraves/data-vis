@@ -127,10 +127,6 @@ longbeach <- longbeach %>%
   mutate(across(c(outcome_type_clean, animal_type), str_to_sentence))
 ```
 
-```{r}
-head(longbeach, width=Inf)
-```
-
 For the sake of de-cluttering, I'm only going to look at the top 5 most frequent pets and top 5 most frequent outcome types.
 
 ```{r}
@@ -148,7 +144,7 @@ outcome_levels <-longbeach %>%
   slice(1:5)
 ```
 
-# Visit types & pets
+# Most frequent visits & outcome types
 
 ```{r}
 
@@ -179,8 +175,8 @@ p_mosaic <- data_clean %>%
   scale_x_productlist(expand=c(0, 0)) + 
   scale_y_productlist(expand=c(0, 0)) + 
   coord_flip() + 
-  labs(y='Pet', x='Purpose of visit') +
-  scale_fill_paletteer_d(palette)
+  labs(y='Pet', x='Visit outcome') +
+  scale_fill_paletteer_d(palette)  
 p_mosaic
 ```
 
@@ -203,33 +199,41 @@ p_hist <- data_clean %>%
         axis.text.y = element_blank(), 
         axis.title = element_blank(), 
         axis.ticks = element_blank(), 
-        axis.text.x = element_text(vjust=5)) + 
-  scale_y_continuous(limits = c(0, 13000))
+        axis.text.x = element_text(vjust=5), 
+        plot.title = element_text(size=18, color = 'grey30', 
+                                  hjust=1)) + 
+  scale_y_continuous(limits = c(0, 13000)) 
 p_hist
 ```
 
+# Number of adoptions over time
+
 ```{r}
 p_stream <- data_clean %>%
+  filter(outcome_type_clean == 'Adoption') %>%
   mutate(year_mo = floor_date(intake_date, "month")) %>%
   group_by(year_mo, animal_type) %>%
   tally() %>% 
+  mutate(animal_type = factor(animal_type, levels = animal_levels$animal_type)) %>%
   ggplot(aes(x=year_mo, 
              y = n, 
              fill=animal_type)) + 
   geom_stream(alpha=alpha) +
-  scale_fill_paletteer_d(palette) + 
-  guides(fill = 'none') + 
+  scale_fill_paletteer_d(palette, drop = FALSE) + 
   scale_x_date(date_breaks = "1 year", 
                date_labels = '%Y', 
                expand = c(0, 0)) + 
   theme(axis.text.y=element_blank(), 
         axis.ticks=element_blank(), 
         axis.line.y=element_blank()) + 
-  labs(x='Year', y='Number of visits')
+  labs(x='Year', y='Number of adoptions') + 
+  guides(fill = FALSE)
 p_stream
 ```
 
-# Version 1
+# Combining
+
+## Version 1
 
 ```{r}
 #| fig-width: 10
@@ -242,12 +246,12 @@ p_bottom <- (p_hist + plot_spacer() + p_mosaic + theme(axis.title.y=element_blan
               heights = c(1, 0.5))
 ```
 
-# Version 2 (Final version)
+## Version 2 (Final version)
 
 ```{r}
 right_side <- (p_hist +
     theme(axis.text.x = element_text(vjust=1))) /
-  (p_mosaic + theme(axis.title.y = element_blank())) +
+  (p_mosaic) +
   plot_layout(ncol = 1, 
               heights = c(1, 1))
 ```
