@@ -91,7 +91,7 @@ ui <- page_sidebar(
       div(
         style = "text-align: center; margin-top: 20px;",
         a(
-          href = "https://github.com/yourusername/your-repo-name",
+          href = "https://github.com/JessLGraves/data-vis/tree/main/tidytuesday/2025-07-08",
           target = "_blank",
           class = "btn btn-outline-dark btn-sm",
           icon("github", lib = "font-awesome"),
