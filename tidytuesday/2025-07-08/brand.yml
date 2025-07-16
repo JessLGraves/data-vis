@@ -1,0 +1,34 @@
+meta:
+  name: brand.yml
+  # link: https://posit-dev.github.io/brand-yml
+# 
+# logo: logos/icon/brand-yml-icon-color.svg
+
+color:
+  palette:
+    black: "#1A1A1A"
+    white: "#F9F9F9"
+    orange: "#FF6F20"
+    pink: "#FF3D7F"
+    lightgrey: "#f5f3ee"
+    grey: "#d6cfc6"
+    darkgrey: "#b7afa5"
+    burntorange: "#cc7755"
+    greenish: "#8a9a5b"
+  # foreground: burntorange
+  # background: lightgrey
+  primary: orange
+  danger: pink
+
+typography:
+  fonts:
+    - family: Rubik
+      source: google
+
+  base:
+    family: Rubik
+    size: 0.8rem
+  headings:
+    family: Rubik
+    weight: 400
+  monospace: Rubik
